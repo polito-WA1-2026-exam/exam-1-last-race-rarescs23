@@ -1,6 +1,8 @@
 
 import dayjs from "dayjs";
 
+// Constructor functions
+
 function Station(id, name) {
   this.id = id;
   this.name = name;
@@ -10,6 +12,13 @@ function Line(id, name, color) {
   this.id = id;
   this.name = name;
   this.color = color;
+}
+
+// StationLine: links station-line with order on the line
+function StationLine(stationId, lineId, order) {
+  this.stationId = stationId;
+  this.lineId = lineId;
+  this.order = order;
 }
 
 function Segment(id, station1Id, station2Id, lineId) {
@@ -35,4 +44,4 @@ function Game(id, userId, startStation, endStation, finalScore, completed, creat
   this.createdAt = dayjs(createdAt);
 }
 
-export { Station, Line, Segment, GameEvent, Game };
+export { Station, Line, StationLine, Segment, GameEvent, Game };
