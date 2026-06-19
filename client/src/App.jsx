@@ -8,6 +8,7 @@ import { doLogin as apiLogin, doLogout as apiLogout, checkSession } from "./api/
 import { MainLayout, NotFoundLayout, ProtectedRoute } from "./components/PageLayout";
 import LoginForm from "./components/LoginForm";
 import HomeInstructions from "./components/HomeInstructions";
+import MetroMap from "./components/MetroMap";
 
 import "./App.css";
 
@@ -63,13 +64,11 @@ function App() {
           />
 
           {/* Protected Routes — only authenticated users */}
-          {/* Placeholder-uri pentru componentele ce vor fi implementate în commit-urile 6-9 */}
           <Route
             path="/game"
             element={
               <ProtectedRoute>
-                <h2>Metro Map — Setup Phase</h2>
-                <p className="text-muted">Coming in next commit...</p>
+                <MetroMap />
               </ProtectedRoute>
             }
           />
