@@ -9,6 +9,7 @@ import { MainLayout, NotFoundLayout, ProtectedRoute } from "./components/PageLay
 import LoginForm from "./components/LoginForm";
 import HomeInstructions from "./components/HomeInstructions";
 import MetroMap from "./components/MetroMap";
+import PlanRoute from "./components/PlanRoute";
 
 import "./App.css";
 
@@ -76,8 +77,7 @@ function App() {
             path="/game/plan"
             element={
               <ProtectedRoute>
-                <h2>Planning Phase</h2>
-                <p className="text-muted">Coming in next commit...</p>
+                <PlanRoute />
               </ProtectedRoute>
             }
           />

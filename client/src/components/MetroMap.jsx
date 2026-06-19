@@ -1,6 +1,4 @@
-/** MetroMap.jsx — Setup Phase: vizualizarea rețelei de metrou **/
-// Pattern: week09/qa-client — useEffect + fetch + Table din react-bootstrap
-// Conform PDF: "The player sees the network map with all stations, their connections, and the lines."
+/** MetroMap.jsx — Setup Phase: viewing the metro network **/
 
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Table, Badge, Button, Alert, Spinner } from "react-bootstrap";
@@ -13,7 +11,7 @@ function MetroMap() {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
-  // La mount: încarcă rețeaua de metrou de la server (pattern week09: useEffect + fetch)
+  // On mount: load metro network from the server
   useEffect(() => {
     const fetchNetwork = async () => {
       try {
@@ -27,12 +25,12 @@ function MetroMap() {
     fetchNetwork();
   }, []);
 
-  // Handler: "Start New Game" — creează un joc nou pe server, apoi navighează la Planning Phase
+  // Handler: "Start New Game" — creates a new game on the server, then navigates to Planning Phase
   const handleStartGame = async () => {
     setErrorMsg("");
     try {
       const game = await startGame();
-      // Navighez la Planning Phase, pasând datele jocului prin state (pattern week09: useNavigate + state)
+      // Navigate to Planning Phase, passing game data via state
       navigate("/game/plan", {
         state: {
           gameId: game.gameId,
@@ -64,26 +62,26 @@ function MetroMap() {
 
   const { lines, stations, stationLines, segments } = network;
 
-  // Construim o mapă: stationId → station name (pentru afișare)
+  // Build a map: stationId -> station name (for display)
   const stationMap = {};
   for (const st of stations) {
     stationMap[st.id] = st.name;
   }
 
-  // Construim o mapă: lineId → line object (pentru culori)
+  // Build a map: lineId -> line object (for colors)
   const lineMap = {};
   for (const line of lines) {
     lineMap[line.id] = line;
   }
 
-  // Construim o mapă: stationId → Set de lineId-uri (pentru a marca stațiile de schimb)
+  // Build a map: stationId -> Set of lineIds (to mark interchange stations)
   const stationLineMap = {};
   for (const sl of stationLines) {
     if (!stationLineMap[sl.stationId]) stationLineMap[sl.stationId] = new Set();
     stationLineMap[sl.stationId].add(sl.lineId);
   }
 
-  // Pentru fiecare linie, grupăm stațiile în ordine (din stationLines, sortat după "order")
+  // For each line, group stations in order (from stationLines, sorted by "order")
   const lineStations = {};
   for (const line of lines) {
     const lineStationList = stationLines
@@ -111,7 +109,7 @@ function MetroMap() {
         </Alert>
       )}
 
-      {/* Tabel cu liniile și stațiile — conform PDF: "all stations, their connections, and the lines" */}
+      {/* Table with lines and stations */}
       <Row>
         <Col>
           <Table striped bordered hover>
@@ -153,12 +151,12 @@ function MetroMap() {
         </Col>
       </Row>
 
-      {/* Legendă stații de schimb */}
+      {/* Interchange stations legend */}
       <p className="text-muted mb-4">
         <strong>⬥</strong> = Interchange station (served by multiple lines)
       </p>
 
-      {/* Tabel cu toate segmentele — afișează conexiunile */}
+      {/* Table with all segments — displays connections */}
       <h5 className="mt-3 mb-2">All Segments (connections)</h5>
       <Row>
         <Col md={8}>
@@ -196,7 +194,7 @@ function MetroMap() {
         </Col>
       </Row>
 
-      {/* Buton Start New Game */}
+      {/* Start New Game button */}
       <div className="text-center mt-4 mb-5">
         <Button variant="success" size="lg" onClick={handleStartGame}>
           🎮 Start New Game
