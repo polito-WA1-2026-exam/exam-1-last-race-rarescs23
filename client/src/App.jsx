@@ -1,122 +1,121 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+/** App.jsx — Main component with Routes and global state **/
+
+import { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router";
+import UserContext from "./contexts/UserContext";
+import { doLogin as apiLogin, doLogout as apiLogout, checkSession } from "./api/auth";
+
+import { MainLayout, NotFoundLayout, ProtectedRoute } from "./components/PageLayout";
+import LoginForm from "./components/LoginForm";
+import HomeInstructions from "./components/HomeInstructions";
+
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // On mount: check if the user has an active session (cookie-based)
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const currentUser = await checkSession();
+        setUser(currentUser);
+      } catch (err) {
+        setUser(null);
+      }
+      setLoading(false);
+    };
+    checkAuth();
+  }, []);
+
+  // Login function — called by LoginForm
+  const doLogin = async (credentials) => {
+    const loggedUser = await apiLogin(credentials);
+    setUser(loggedUser);
+  };
+
+  // Logout function — called by Header
+  const doLogout = async () => {
+    await apiLogout();
+    setUser(null);
+  };
+
+  if (loading) {
+    return (
+      <div className="text-center mt-5">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <UserContext.Provider value={user}>
+      <Routes>
+        <Route element={<MainLayout doLogout={doLogout} />}>
+          {/* Public Routes — accessible also to anonymous users */}
+          <Route path="/" element={<HomeInstructions />} />
+          <Route
+            path="/login"
+            element={
+              user ? <Navigate to="/game" replace /> : <LoginForm doLogin={doLogin} />
+            }
+          />
 
-      <div className="ticks"></div>
+          {/* Protected Routes — only authenticated users */}
+          {/* Placeholder-uri pentru componentele ce vor fi implementate în commit-urile 6-9 */}
+          <Route
+            path="/game"
+            element={
+              <ProtectedRoute>
+                <h2>Metro Map — Setup Phase</h2>
+                <p className="text-muted">Coming in next commit...</p>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/game/plan"
+            element={
+              <ProtectedRoute>
+                <h2>Planning Phase</h2>
+                <p className="text-muted">Coming in next commit...</p>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/game/execution"
+            element={
+              <ProtectedRoute>
+                <h2>Execution Phase</h2>
+                <p className="text-muted">Coming in next commit...</p>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/game/result"
+            element={
+              <ProtectedRoute>
+                <h2>Result Phase</h2>
+                <p className="text-muted">Coming in next commit...</p>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ranking"
+            element={
+              <ProtectedRoute>
+                <h2>Ranking</h2>
+                <p className="text-muted">Coming in next commit...</p>
+              </ProtectedRoute>
+            }
+          />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          {/* Fallback */}
+          <Route path="*" element={<NotFoundLayout />} />
+        </Route>
+      </Routes>
+    </UserContext.Provider>
+  );
 }
 
-export default App
+export default App;
