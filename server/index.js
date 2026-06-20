@@ -128,6 +128,29 @@ app.get("/api/metro/network", isLoggedIn, async (req, res) => {
   }
 });
 
+// GET /api/metro/segments — Returns stations + segments WITHOUT lineId (for Planning Phase)
+app.get("/api/metro/segments", isLoggedIn, async (req, res) => {
+  try {
+    const network = await getNetwork();
+    // Strip lineId from segments — the player must not know the line in Planning Phase
+    const segmentsWithoutLine = network.segments.map((seg) => ({
+      id: seg.id,
+      station1Id: seg.station1Id,
+      station1Name: seg.station1Name,
+      station2Id: seg.station2Id,
+      station2Name: seg.station2Name,
+    }));
+    // Return also stationLines to mark interchange stations (public information)
+    res.json({
+      stations: network.stations,
+      stationLines: network.stationLines,
+      segments: segmentsWithoutLine,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ─── RUTE: Joc ────────────────────────────────────────────────────────────────
 
 /**
@@ -391,7 +414,7 @@ app.post(
             description: event.description,
             effect: event.scoreEffect,
           },
-          coinsAfter: Math.max(0, coins), // nu afișăm negativ pas cu pas
+          coinsAfter: coins, // real total (can be negative); only finalScore is capped at 0
         });
 
         stepStation = toStation;

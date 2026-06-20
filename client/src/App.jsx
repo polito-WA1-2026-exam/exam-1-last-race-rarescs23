@@ -10,6 +10,9 @@ import LoginForm from "./components/LoginForm";
 import HomeInstructions from "./components/HomeInstructions";
 import MetroMap from "./components/MetroMap";
 import PlanRoute from "./components/PlanRoute";
+import GamePlay from "./components/GamePlay";
+import GameResult from "./components/GameResult";
+import Ranking from "./components/Ranking";
 
 import "./App.css";
 
@@ -85,8 +88,7 @@ function App() {
             path="/game/execution"
             element={
               <ProtectedRoute>
-                <h2>Execution Phase</h2>
-                <p className="text-muted">Coming in next commit...</p>
+                <GamePlay />
               </ProtectedRoute>
             }
           />
@@ -94,8 +96,7 @@ function App() {
             path="/game/result"
             element={
               <ProtectedRoute>
-                <h2>Result Phase</h2>
-                <p className="text-muted">Coming in next commit...</p>
+                <GameResult />
               </ProtectedRoute>
             }
           />
@@ -103,8 +104,7 @@ function App() {
             path="/ranking"
             element={
               <ProtectedRoute>
-                <h2>Ranking</h2>
-                <p className="text-muted">Coming in next commit...</p>
+                <Ranking />
               </ProtectedRoute>
             }
           />
