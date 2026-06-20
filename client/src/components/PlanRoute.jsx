@@ -13,7 +13,7 @@ import {
   Card,
 } from "react-bootstrap";
 import { useNavigate, useLocation, Navigate } from "react-router";
-import { getNetwork, submitRoute } from "../api/api";
+import { getSegments, submitRoute } from "../api/api";
 
 const TIMER_SECONDS = 90;
 
@@ -42,18 +42,19 @@ function PlanRoute() {
   const submittedRef = useRef(submitted);
   submittedRef.current = submitted;
 
-  // La mount: încarcă rețeaua de metrou (pattern week09: useEffect + async function)
+  // On mount: load stations + segments WITHOUT lineId
+  // We use /api/metro/segments which does NOT include lineId
   useEffect(() => {
-    const fetchNetwork = async () => {
+    const fetchSegments = async () => {
       try {
-        const data = await getNetwork();
+        const data = await getSegments();
         setNetwork(data);
       } catch (err) {
         setErrorMsg(err.message);
       }
       setLoading(false);
     };
-    fetchNetwork();
+    fetchSegments();
   }, []);
 
   // Timer countdown

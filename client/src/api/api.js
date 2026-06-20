@@ -20,6 +20,23 @@ export const getNetwork = async () => {
 };
 
 /**
+ * Returns stations + segments WITHOUT lineId (for Planning Phase).
+ */
+export const getSegments = async () => {
+  const response = await fetch(`${SERVER_URL}/api/metro/segments`, {
+    credentials: "include",
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    const errObj = await response.json();
+    throw new Error(errObj.error || "Failed to fetch segments");
+  }
+};
+
+/**
  * Creates a new game. Returns { gameId, startStation, endStation }.
  */
 export const startGame = async () => {
