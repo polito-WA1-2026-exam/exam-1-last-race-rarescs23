@@ -86,4 +86,5 @@ I used AI tools (ChatGPT,Gemini) for:
 
 - Validating edge cases for route validation logic
 
-I verified and adapted all AI-generated output through manual code implementation and review of the code and manual testing of each game phase (login, setup, planning, execution, result, ranking).
+I verified and adapted all AI-generated output through manual code implementation and review of the code and manual testing of each game phase (login, setup, planning, execution, result, ranking).2
+2
