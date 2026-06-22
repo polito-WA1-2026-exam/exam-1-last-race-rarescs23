@@ -1,5 +1,5 @@
 # Exam #1: "Last Race"
-## Student: s123456 LASTNAME FIRSTNAME
+## Student: s362761  Cusma Rares
 
 A single-player metro route planning game. Authenticated users plan a route between two randomly assigned stations on a fictional metro network, then ride through it step by step with random events affecting their coin balance.
 
@@ -80,9 +80,10 @@ A single-player metro route planning game. Authenticated users plan a route betw
 - charlie@example.com, password3 (has 1 valid game + 1 invalid game with score 0)
 
 ## Use of AI Tools
-I used AI tools (Antigravity / Claude) for:
+I used AI tools (ChatGPT,Gemini) for:
+
 - Planning the architecture and file structure of the project
-- Generating boilerplate code following course patterns (week09-11)
+
 - Validating edge cases for route validation logic
 
-I verified and adapted all AI-generated output through manual code review and manual testing of each game phase (login, setup, planning, execution, result, ranking). I ensured all patterns follow the course conventions (Express + Passport + sqlite3 + React + react-bootstrap).
+I verified and adapted all AI-generated output through manual code implementation and review of the code and manual testing of each game phase (login, setup, planning, execution, result, ranking).

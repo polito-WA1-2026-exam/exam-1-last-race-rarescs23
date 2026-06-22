@@ -8,7 +8,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { check, validationResult } from "express-validator";
 
-import { getUser } from "./dao-users.js";
+import { getUser, getUserById } from "./dao-users.js";
 import { getNetwork, getAllSegments, getSegmentById } from "./dao-metro.js";
 import {
   createGame,
@@ -55,7 +55,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const { getUserById } = await import("./dao-users.js");
     const user = await getUserById(id);
     done(null, user);
   } catch (err) {

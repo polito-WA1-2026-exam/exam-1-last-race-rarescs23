@@ -1,8 +1,6 @@
-/* App.css — Stiluri specifice pentru componente */
-/* Stilurile de bază Bootstrap sunt importate în main.jsx */
 
-/* Ajustări minore peste Bootstrap */
+/* Navbar brand size override */
 .navbar-brand {
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  font-weight: 700;
 }

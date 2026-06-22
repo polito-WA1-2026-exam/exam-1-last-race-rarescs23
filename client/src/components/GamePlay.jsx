@@ -32,7 +32,7 @@ function GamePlay() {
     return <Navigate to="/game" replace />;
   }
 
-  const { startingCoins, steps, finalScore } = result;
+  const { startingCoins, steps } = result;
 
   // Handler: advance to next step
   const handleNextStep = () => {

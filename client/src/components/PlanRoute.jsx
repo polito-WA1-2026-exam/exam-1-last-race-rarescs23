@@ -35,49 +35,20 @@ function PlanRoute() {
   const [timeLeft, setTimeLeft] = useState(TIMER_SECONDS);
   const [submitted, setSubmitted] = useState(false);
 
-  // Ref pentru a accesa ruta curentă din callback-ul timer-ului
+  // Ref to access the current route from the timer callback
   const selectedRouteRef = useRef(selectedRoute);
-  selectedRouteRef.current = selectedRoute;
-
   const submittedRef = useRef(submitted);
-  submittedRef.current = submitted;
 
-  // On mount: load stations + segments WITHOUT lineId
-  // We use /api/metro/segments which does NOT include lineId
   useEffect(() => {
-    const fetchSegments = async () => {
-      try {
-        const data = await getSegments();
-        setNetwork(data);
-      } catch (err) {
-        setErrorMsg(err.message);
-      }
-      setLoading(false);
-    };
-    fetchSegments();
-  }, []);
+    selectedRouteRef.current = selectedRoute;
+  }, [selectedRoute]);
 
-  // Timer countdown
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(intervalId);
-          // Auto-submit when time expires
-          if (!submittedRef.current) {
-            handleSubmitRoute(selectedRouteRef.current);
-          }
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    submittedRef.current = submitted;
+  }, [submitted]);
 
-    // Cleanup on unmount
-    return () => clearInterval(intervalId);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Handler: trimite ruta la server
+  // Handler: submits the route to the server
+  // Declared BEFORE the timer that calls it
   const handleSubmitRoute = async (routeToSubmit) => {
     if (submittedRef.current) return; // avoid double-submit
     setSubmitted(true);
@@ -116,6 +87,41 @@ function PlanRoute() {
       submittedRef.current = false;
     }
   };
+
+  // On mount: load stations + segments WITHOUT lineId
+  // We use /api/metro/segments which does NOT include lineId
+  useEffect(() => {
+    const fetchSegments = async () => {
+      try {
+        const data = await getSegments();
+        setNetwork(data);
+      } catch (err) {
+        setErrorMsg(err.message);
+      }
+      setLoading(false);
+    };
+    fetchSegments();
+  }, []);
+
+  // Timer countdown
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(intervalId);
+          // Auto-submit when time expires
+          if (!submittedRef.current) {
+            handleSubmitRoute(selectedRouteRef.current);
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    // Cleanup on unmount
+    return () => clearInterval(intervalId);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Handler: add segment to route
   const handleAddSegment = (segId) => {

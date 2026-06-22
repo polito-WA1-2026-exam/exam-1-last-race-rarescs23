@@ -1,6 +1,6 @@
 /** PageLayout.jsx — Layouts: MainLayout, NotFoundLayout **/
 
-import { Container, Alert, Button } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { Outlet, useNavigate, Navigate } from "react-router";
 import { useContext } from "react";
 import UserContext from "../contexts/UserContext";

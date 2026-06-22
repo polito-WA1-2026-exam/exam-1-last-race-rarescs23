@@ -26,20 +26,21 @@ function HomeInstructions() {
             <ListGroup.Item>
               <strong>1. Setup Phase:</strong> View the metro network map with
               all lines, stations, and connections. Press{" "}
-              <em>&quot;Start New Game&quot;</em> to begin — the server will randomly
-              assign you a start station and a destination.
+              <em>&quot;Start New Game&quot;</em> to begin — you will have a randomly
+              assigned start station and a destination.
             </ListGroup.Item>
             <ListGroup.Item>
               <strong>2. Planning Phase (90 seconds):</strong> Build a route
               from your start to your destination by selecting segments one by
-              one. You cannot see which line each segment belongs to! Submit your
-              route before the timer runs out.
+              one. You cannot see which line each segment belongs to! You have to
+              submit your route before the timer runs out.
             </ListGroup.Item>
             <ListGroup.Item>
               <strong>3. Execution Phase:</strong> If your route is valid, ride
-              through it step by step. At each segment, a random event will
-              affect your coin balance (starting at 20 coins). Events can add or
-              subtract coins.
+              through it step by step by pressing the{" "}
+              <em>&quot;Next Step&quot;</em> button. At each segment, a random event
+              will affect your coin balance (starting at 20 coins). Events can
+              add or subtract coins.
             </ListGroup.Item>
             <ListGroup.Item>
               <strong>4. Result Phase:</strong> See your final score. If your

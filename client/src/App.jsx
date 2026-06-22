@@ -26,7 +26,7 @@ function App() {
       try {
         const currentUser = await checkSession();
         setUser(currentUser);
-      } catch (err) {
+      } catch {
         setUser(null);
       }
       setLoading(false);
