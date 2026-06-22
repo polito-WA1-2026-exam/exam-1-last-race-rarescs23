@@ -86,18 +86,31 @@ const isLoggedIn = (req, res, next) => {
 // RUTE: Autentificare
 
 // POST /api/sessions — Login
-app.post("/api/sessions", (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) return next(err);
-    if (!user) {
-      return res.status(401).json({ error: info.message });
+app.post(
+  "/api/sessions",
+  [
+    check("email").isEmail().withMessage("Invalid email format."),
+    check("password").isLength({ min: 1 }).withMessage("Password cannot be empty."),
+  ],
+  (req, res, next) => {
+    // Return 422 if validation fails
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ error: errors.array()[0].msg });
     }
-    req.login(user, (err) => {
+
+    passport.authenticate("local", (err, user, info) => {
       if (err) return next(err);
-      return res.json(req.user);
-    });
-  })(req, res, next);
-});
+      if (!user) {
+        return res.status(401).json({ error: info.message });
+      }
+      req.login(user, (err) => {
+        if (err) return next(err);
+        return res.json(req.user);
+      });
+    })(req, res, next);
+  }
+);
 
 // GET /api/sessions/current — Verify current session
 app.get("/api/sessions/current", (req, res) => {

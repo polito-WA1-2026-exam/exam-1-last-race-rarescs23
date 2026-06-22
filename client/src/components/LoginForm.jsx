@@ -16,9 +16,20 @@ function LoginForm(props) {
     event.preventDefault();
     setErrorMsg("");
 
-    // Simple client-side validation
+    // Client-side validation
     if (!email || !password) {
       setErrorMsg("Please fill in all fields.");
+      return;
+    }
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMsg("Please enter a valid email address.");
+      return;
+    }
+    // Validate password length
+    if (password.length < 1) {
+      setErrorMsg("Password cannot be empty.");
       return;
     }
 
